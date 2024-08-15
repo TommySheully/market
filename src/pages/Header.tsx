@@ -1,10 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import React from 'react'
 
 
 const Header = () => {
-  const navigate = useNavigate();
-
   return (
     <header className="bg-base-100 shadow-md p-4">
       <div className="container mx-auto flex justify-between items-center">

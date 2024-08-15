@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom'
 const FormProducts = () => {
   const products = useAppSelector<Category[]>(formProductsSelector)
   const navigate = useNavigate()
-  console.log(products)
   const handleCardClick = (id: number) => navigate(`/form-products/${id}`)
   const handleAdd = () => navigate('/form-products/create')
 

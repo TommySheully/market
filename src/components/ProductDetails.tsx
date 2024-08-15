@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { deleteProductTC, getProductTC } from '@/reducers/products-reducer.ts'
 import { useAppDispatch, useAppSelector } from '@/app/store.ts'
-import { appStatusSelector, formProductSelector, formProductsSelector, productSelector } from '@/app/selectors.ts'
+import { appStatusSelector, formProductSelector, productSelector } from '@/app/selectors.ts'
 import { getIsForm } from '@/utils/isForm.ts'
-import { deleteFormProductAC, deleteFormProductTC } from '@/reducers/form-reducer.ts'
-import { Category } from '@/api/api.ts'
+import { deleteFormProductTC } from '@/reducers/form-reducer.ts'
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>()
@@ -13,10 +12,6 @@ const ProductDetails = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isForm = getIsForm()
-
-
-  const products = useAppSelector<Category[]>(formProductsSelector)
-  console.log(products)
 
   const product = useAppSelector((state) => isForm ? formProductSelector(state, Number(id)) : productSelector(state, Number(id)))
 

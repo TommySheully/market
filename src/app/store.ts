@@ -1,21 +1,33 @@
 import { ActionCreatorsMapObject, AnyAction, bindActionCreators, combineReducers } from 'redux'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { appReducer } from '../reducers/app-reducer.ts'
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { productsReducer } from '@/reducers/products-reducer.ts'
 import { formReducer } from '@/reducers/form-reducer.ts'
+import storage from 'redux-persist/lib/storage'
+import { persistReducer, persistStore } from 'redux-persist'
+import { appReducer } from '@/reducers/app-reducer.ts'
+
+const persistConfig = {
+  key: 'root',
+  storage
+}
+
+const persistedFormReducer = persistReducer(persistConfig, formReducer)
 
 const rootReducer = combineReducers({
-  form: formReducer,
+  form: persistedFormReducer,
   products: productsReducer,
-  app: appReducer,
+  app: appReducer
 })
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware() })
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+})
 
+
+export const persist = persistStore(store)
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, void, AnyAction>
 
