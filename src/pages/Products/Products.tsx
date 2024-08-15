@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/app/store.ts'
 import { appStatusSelector, productsSelector } from '@/app/selectors.ts'
-import { Category } from '@/api/todolists-api.ts'
+import { Category } from '@/api/api.ts'
 import { getProductsTC } from '@/reducers/products-reducer.ts'
+import { useNavigate } from 'react-router-dom'
 
 const Products = () => {
   const status = useAppSelector<string|null>(appStatusSelector)
   const products = useAppSelector<Category[]|null>(productsSelector)
   const [productLimit, setProductLimit] = useState<number>(8);
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch()
 
   const handleLimitChange = (limit: number) => {
     setProductLimit(limit);
+    dispatch(getProductsTC(limit))
   };
+
+  const handleCardClick = (id: number) => {
+    navigate(`/product/${id}`);
+  };
+  const handleAdd = () => navigate('/product/create')
+
 
   useEffect(() => {
     dispatch(getProductsTC(productLimit))
@@ -21,7 +29,7 @@ const Products = () => {
 
   return (
     <div className="p-4">
-      <div className="mb-4 flex justify-center space-x-4">
+      <div className="mb-4 flex justify-center space-x-4 bg-white rounded-lg p-4">
         <button
           disabled={status === 'loading'}
           onClick={() => handleLimitChange(8)}
@@ -43,6 +51,12 @@ const Products = () => {
         >
           20 продуктов
         </button>
+        <button
+          onClick={handleAdd}
+          className="btn btn-accent"
+        >
+          Добавить новый продукт для API списка
+        </button>
       </div>
       {status === 'loading' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -57,7 +71,7 @@ const Products = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products && products.map(product => (
-            <div key={product.id} className="card bg-base-100 shadow-md">
+            <div key={product.id} className="card bg-base-100 shadow-md"  onClick={() => handleCardClick(product.id)}>
               <figure>
                 <img src={product.image} alt={product.title} className="w-full h-48 object-cover"/>
               </figure>

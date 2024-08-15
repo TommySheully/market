@@ -4,8 +4,10 @@ import { appReducer } from '../reducers/app-reducer.ts'
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { productsReducer } from '@/reducers/products-reducer.ts'
+import { formReducer } from '@/reducers/form-reducer.ts'
 
 const rootReducer = combineReducers({
+  form: formReducer,
   products: productsReducer,
   app: appReducer,
 })

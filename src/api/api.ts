@@ -8,9 +8,21 @@ export const productsAPI = {
   getProducts(limit: number) {
     return instance.get<Category[]>('products', {
       params: { limit }
-    });
+    })
+  },
+  getProduct(id: number) {
+    return instance.get<Category>(`products/${id}`)
+  },
+  createProduct(data: Partial<Category>) {
+    return instance.post<Category>(`products`, data)
+  },
+  updateProduct(id: number, data: Partial<Category>) {
+    return instance.put<Category>(`products/${id}`, data)
+  },
+  deleteProduct(id: number) {
+    return instance.delete<{ message: string }>(`products/${id}`)
   }
-};
+}
 
 export type Rating = {
   rate: number;
@@ -24,7 +36,7 @@ export type Category = {
   description: string;
   category: string;
   image: string;
-  rating: Rating;
+  rating?: Rating;
 };
 
 export type ResponseType<D = object> = {
