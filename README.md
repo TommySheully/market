@@ -1,7 +1,7 @@
 ## Install 
 
 ```
-yarn dev
+yarn
 ```
 
 ## Start Project 
